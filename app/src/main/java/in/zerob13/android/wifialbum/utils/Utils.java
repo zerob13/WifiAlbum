@@ -2,11 +2,9 @@ package in.zerob13.android.wifialbum.utils;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.webkit.URLUtil;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -37,7 +35,7 @@ public class Utils {
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr
                         .hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()&&!inetAddress.isLinkLocalAddress()) {
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
                         return inetAddress.getHostAddress().toString();
                     }
                 }
@@ -124,4 +122,8 @@ public class Utils {
         return map;
     }
 
+    public static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
 }

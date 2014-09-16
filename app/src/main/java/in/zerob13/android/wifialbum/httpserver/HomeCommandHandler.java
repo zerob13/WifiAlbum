@@ -1,6 +1,7 @@
 package in.zerob13.android.wifialbum.httpserver;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
@@ -12,8 +13,10 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpRequestHandler;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,14 +39,28 @@ public class HomeCommandHandler implements HttpRequestHandler {
             public void writeTo(final OutputStream outstream) throws IOException {
                 OutputStreamWriter writer = new OutputStreamWriter(outstream, "UTF-8");
 
-                String resp = "<html><head></head><body><h1>Pics<h1>";
-                List<String> listImages=Utils.getCameraImages(context);
-                 for(int i=0;i<listImages.size();i++){
-                     resp=resp+"<image style=\"width:300px\" src=\"getImg?img="+listImages.get(i)+"\" /><br><p>"+listImages.get(i)+"</p>";
-                 }
-                resp=resp+"</body></html>";
+                AssetManager manager = context.getAssets();
 
-                writer.write(resp);
+                InputStream sr = manager.open("pages/index.html");
+                String theString = Utils.convertStreamToString(sr);
+                String resp = "";
+                List<String> listImages = Utils.getCameraImages(context);
+                String temple = "<div class=\"col-md-3 col-xs-3 col-sm-3 \">"
+                        + "<a href=\"/getImg?img=%s\"><img class=\"img-responsive\" src=\"/getImg?img=%s\"></a></div>";
+                for (int i = 0; i < listImages.size(); i++) {
+                    if (i % 4 == 0) {
+                        if (i != 0) {
+                            resp += "</div>";
+                        }
+
+                        resp += "<div class=\"row marketing\">";
+                    }
+                    resp = resp + String.format(temple, listImages.get(i), listImages.get(i));
+
+                }
+                theString = String.format(theString, resp);
+
+                writer.write(theString);
                 writer.flush();
             }
         });

@@ -31,6 +31,7 @@ public class WebServer {
     private static final String ALL_PATTERN = "/";
     private static final String HOME_PATTERN = "/home.html";
     private static final String FILE_PATTERN= "/getImg";
+    private static final String ASSETS_PATTERN= "/getAsset";
 
     private Context context = null;
 
@@ -56,8 +57,9 @@ public class WebServer {
 
         registry = new HttpRequestHandlerRegistry();
 
-        registry.register(ALL_PATTERN, new HomeCommandHandler(context));
         registry.register(FILE_PATTERN, new FileHandler(context));
+        registry.register(ASSETS_PATTERN, new AssetsHandler(context));
+        registry.register(ALL_PATTERN, new HomeCommandHandler(context));
 
 
         httpService.setHandlerResolver(registry);
