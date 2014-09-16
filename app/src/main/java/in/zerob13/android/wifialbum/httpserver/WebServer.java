@@ -28,8 +28,9 @@ public class WebServer {
     public static boolean RUNNING = false;
     public static int serverPort = 8888;
 
-    private static final String ALL_PATTERN = "*";
+    private static final String ALL_PATTERN = "/";
     private static final String HOME_PATTERN = "/home.html";
+    private static final String FILE_PATTERN= "/getImg";
 
     private Context context = null;
 
@@ -55,7 +56,9 @@ public class WebServer {
 
         registry = new HttpRequestHandlerRegistry();
 
-        registry.register(HOME_PATTERN, new HomeCommandHandler(context));
+        registry.register(ALL_PATTERN, new HomeCommandHandler(context));
+        registry.register(FILE_PATTERN, new FileHandler(context));
+
 
         httpService.setHandlerResolver(registry);
     }

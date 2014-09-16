@@ -2,6 +2,7 @@ package in.zerob13.android.wifialbum;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.shamanland.fab.FloatingActionButton;
 
 import in.zerob13.android.wifialbum.httpserver.WebServerService;
+import in.zerob13.android.wifialbum.utils.Utils;
 
 
 public class WifiActivity extends Activity {
@@ -28,13 +30,15 @@ public class WifiActivity extends Activity {
         fab.setColor(Color.RED);
         fab.initBackground();
         fab.setImageResource(R.drawable.dot);
+        //disable Orientation
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         ser = new Intent(this, WebServerService.class);
 //        startService(ser);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                text.setText("test");
+                text.setText(Utils.getIpString()+":8888");
                 getApplicationContext().startService(ser);
             }
         });
