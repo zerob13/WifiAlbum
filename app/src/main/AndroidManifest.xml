@@ -19,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".httpserver.WebServerService" android:process="remote"></service>
+        <service
+            android:name=".httpserver.WebServerService"
+            android:process=".remote"></service>
 
     </application>
 
